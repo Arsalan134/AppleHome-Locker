@@ -47,6 +47,7 @@ void my_homekit_setup() {
   // HomeKit sever uses the .setter_ex internally, see homekit_accessories_init
   // function. Maybe this is a legacy design issue in the original esp-homekit
   // library, and I have no reason to modify this "feature".
+  // lock_target_state.setter = lock_target_state_setter;
 
   arduino_homekit_setup(&config);
 
@@ -72,6 +73,5 @@ void loop() {
     LOG_D("Free heap: %d, HomeKit clients: %d", ESP.getFreeHeap(),
           arduino_homekit_connected_clients_count());
   }
-
   delay(10);
 }

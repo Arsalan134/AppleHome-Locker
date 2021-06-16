@@ -55,6 +55,8 @@ void lock_target_state_setter(homekit_value_t value) {
 
   lock_target_state.value = value;
 
+  printf("%s\n", value.string_value);
+
   if (value.int_value == 0) {
     lock_unlock();
   } else {
