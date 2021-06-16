@@ -19,18 +19,12 @@ typedef enum {
 homekit_characteristic_t name = HOMEKIT_CHARACTERISTIC_(NAME, "Lock");
 
 homekit_characteristic_t lock_current_state =
-    HOMEKIT_CHARACTERISTIC_(LOCK_CURRENT_STATE, lock_state_secured, );
+    HOMEKIT_CHARACTERISTIC_(LOCK_CURRENT_STATE, lock_state_secured);
 
 void lock_target_state_setter(homekit_value_t value);
 
-homekit_characteristic_t lock_target_state =
-    HOMEKIT_CHARACTERISTIC_(LOCK_TARGET_STATE, lock_state_secured,
-                            .setter = lock_target_state_setter, );
-
-void my_accessory_identify(homekit_value_t _value) {
-  printf("accessory identify\n");
-  digitalWrite(2, 1);
-}
+homekit_characteristic_t lock_target_state = HOMEKIT_CHARACTERISTIC_(
+    LOCK_TARGET_STATE, lock_state_secured, .setter = lock_target_state_setter);
 
 void lock_identify(homekit_value_t _value) {
   printf("Lock identify\n");
@@ -55,8 +49,6 @@ void lock_target_state_setter(homekit_value_t value) {
 
   lock_target_state.value = value;
 
-  printf("%s\n", value.string_value);
-
   if (value.int_value == 0) {
     lock_unlock();
   } else {
@@ -78,11 +70,11 @@ homekit_accessory_t *accessories[] = {
                         .characteristics =
                             (homekit_characteristic_t *[]){
                                 &name,
-                                HOMEKIT_CHARACTERISTIC(MANUFACTURER, "HaPK"),
+                                HOMEKIT_CHARACTERISTIC(MANUFACTURER, "Arsalan"),
                                 HOMEKIT_CHARACTERISTIC(SERIAL_NUMBER, "1"),
                                 HOMEKIT_CHARACTERISTIC(MODEL, "Basic"),
                                 HOMEKIT_CHARACTERISTIC(FIRMWARE_REVISION,
-                                                       "0.1"),
+                                                       "1.0"),
                                 HOMEKIT_CHARACTERISTIC(IDENTIFY, lock_identify),
                                 NULL}),
                     HOMEKIT_SERVICE(
