@@ -31,45 +31,13 @@
 // HomeKit setup and loop
 //==============================
 
-// access your HomeKit characteristics defined in my_accessory.c
-extern "C" homekit_server_config_t config;
-// extern "C" homekit_characteristic_t cha_switch_on;
-
-extern "C" homekit_characteristic_t lock_current_state;
-
-extern "C" homekit_characteristic_t lock_target_state;
-
-// extern "C" void lock_target_state_setter(homekit_value_t value);
-
 static uint32_t next_heap_millis = 0;
 
 #define PIN_SWITCH 2
 
-// Called when the switch value is changed by iOS Home APP
-// void cha_switch_on_setter(const homekit_value_t value) {
-//   bool on = value.bool_value;
-//   lock_current_state.value.bool_value = on; // sync the value
-//   LOG_D("Switch: %s", on ? "ON" : "OFF");
-//   digitalWrite(PIN_SWITCH, on ? LOW : HIGH);
-// }
-
 void my_homekit_setup() {
   pinMode(PIN_SWITCH, OUTPUT);
   digitalWrite(PIN_SWITCH, HIGH);
-
-  // Add the .setter function to get the switch-event sent from iOS Home APP.
-  // The .setter should be added before arduino_homekit_setup.
-  // HomeKit sever uses the .setter_ex internally, see homekit_accessories_init
-  // function. Maybe this is a legacy design issue in the original esp-homekit
-  // library, and I have no reason to modify this "feature".
-  // lock_target_state.setter = lock_target_state_setter;
-
-  arduino_homekit_setup(&config);
-
-  // report the switch value to HomeKit if it is changed (e.g. by a physical
-  // button) bool switch_is_on = true/false; cha_switch_on.value.bool_value =
-  // switch_is_on; homekit_characteristic_notify(&cha_switch_on,
-  // cha_switch_on.value);
 }
 
 void my_homekit_loop() {
@@ -85,8 +53,7 @@ void my_homekit_loop() {
 void setup() {
   Serial.begin(115200);
   wifi_connect(); // in wifi_info.h
-  // homekit_storage_reset(); // to remove the previous HomeKit pairing storage
-  // when you first run this new HomeKit example
+  // homekit_storage_reset(); // to remove the previous HomeKit pairing storage 
   my_homekit_setup();
 }
 
